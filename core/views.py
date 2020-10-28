@@ -39,14 +39,40 @@ def query_regex(request):
     regex =  request_data.get('regex')
     flags = request_data.get('flags')
     text = request_data.get('text')
-    def find(regex, text):
+    replace_text = request_data.get('replace_text')
+    print(replace_text)
+
+    def def_flags(flags_arry):
+        my_flags=re.MULTILINE # since it doesnt affect the finditer method we can use it as start
+        for flag in flags_arry:
+            if flag == 'IGNORECASE':
+                my_flags += re.IGNORECASE
+            if flag == 'UNICODE ':
+                my_flags += re.UNICODE
+            if flag == 'LOCALE':
+                my_flags += re.LOCALE
+            if flag == 'VERBOSE':
+                my_flags += re.VERBOSE
+            if flag == 'DOTALL':
+                my_flags += re.DOTALL
+
+        return my_flags
+
+
+    def find(regex, text, flags):
         result_arr = []
-        match_obj = re.finditer(r''+regex, text)
+        match_obj = re.finditer(r''+regex, text, flags=flags)
         for match in match_obj:
             result_arr.append(match.group())
 
         return result_arr
 
-    res = find(regex, text)
+    def replace_func(regex, replace_text, text, flags):
+        return re.sub(regex, replace_text, text, flags=def_flags(flags))
+
+    if replace_text is not None:
+        res = replace_func(regex, replace_text, text, flags)
+    else:
+        res = find(regex, text, def_flags(flags))
 
     return JsonResponse(res, safe=False, status=status.HTTP_200_OK)
