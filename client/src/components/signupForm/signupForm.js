@@ -1,88 +1,100 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import * as actions from '../../redux/actions';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 const SignupForm = function(props) {
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const handle_signup = e => {
+    e.preventDefault();
+    axios({
+      method: 'post',
+      url: 'http://localhost:8000/core/users/',
+      data: {
+        username: props.username,
+        password: props.password,
+        email: props.email
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      localStorage.setItem('token', res.data.token);
+      props.setUsername(res.data.username);
+      props.setEmail(res.data.email);
+      props.setIsLoggedin(true);
+      props.setUserDisplay('USER_PROFILE');
+    });
+  };
 
   return (
-    <form onSubmit={e => props.handle_signup(e, { username, password, email })}>
-      <h4>Sign Up</h4>
-      <label htmlFor='username'>Username</label>
-      <input
-        type='text'
-        name='username'
-        value={username}
-        onChange={e => {
-          setUserName(e.target.value);
-        }}
-      />
-      <label htmlFor='password'>Password</label>
-      <input
-        type='password'
-        name='password'
-        value={password}
-        onChange={e => {
-          setPassword(e.target.value);
-        }}
-      />
-      <label htmlFor='email'>Email</label>
-      <input
-        type='email'
-        name='email'
-        value={email}
-        onChange={e => {
-          setEmail(e.target.value);
-        }}
-      />
-      <input type='submit' />
+    <form onSubmit={e => handle_signup(e)}>
+      <div className='form-group'>
+        <h3 className='formHeaders'>Sign Up</h3>
+        <label htmlFor='username'>Username:</label>
+        <input
+          style={{ width: '80%' }}
+          placeholder='Username'
+          required
+          className='form-control'
+          type='text'
+          name='username'
+          value={props.username}
+          onChange={e => {
+            props.setUsername(e.target.value);
+          }}
+        />
+        {/* <br /> */}
+        <label htmlFor='email'>Email</label>
+        <input
+          style={{ width: '80%' }}
+          placeholder='Email'
+          required
+          className='form-control'
+          type='email'
+          name='email'
+          value={props.email}
+          onChange={e => {
+            props.setEmail(e.target.value);
+          }}
+        />
+        <label htmlFor='password'>Password</label>
+        <input
+          style={{ width: '80%' }}
+          placeholder='Password'
+          required
+          className='form-control'
+          type='password'
+          name='password'
+          value={props.password}
+          onChange={e => {
+            props.setPassword(e.target.value);
+          }}
+        />
+      </div>
+      <button className='btn btn-success' type='submit'>
+        Signup
+      </button>
     </form>
   );
 };
 
-// class SignupForm extends React.Component {
-//   state = {
-//     username: '',
-//     password: ''
-//   };
-
-//   handle_change = e => {
-//     const name = e.target.name;
-//     const value = e.target.value;
-//     this.setState(prevstate => {
-//       const newState = { ...prevstate };
-//       newState[name] = value;
-//       return newState;
-//     });
-//   };
-
-//   render() {
-//     return (
-//       <form onSubmit={e => this.props.handle_signup(e, this.state)}>
-//         <h4>Sign Up</h4>
-//         <label htmlFor='username'>Username</label>
-//         <input
-//           type='text'
-//           name='username'
-//           value={this.state.username}
-//           onChange={this.handle_change}
-//         />
-//         <label htmlFor='password'>Password</label>
-//         <input
-//           type='password'
-//           name='password'
-//           value={this.state.password}
-//           onChange={this.handle_change}
-//         />
-//         <input type='submit' />
-//       </form>
-//     );
-//   }
-// }
-
-export default SignupForm;
-
-SignupForm.propTypes = {
-  handle_signup: PropTypes.func.isRequired
+const mapStateToProps = state => {
+  return {
+    username: state.username,
+    password: state.password,
+    email: state.email,
+    userDisplay: state.userDisplay
+  };
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsername: useranme => dispatch(actions.setUsername(useranme)),
+    setPassword: password => dispatch(actions.setPassword(password)),
+    setIsLoggedin: () => dispatch(actions.setIsLoggedin(true)),
+    setEmail: email => dispatch(actions.setEmail(email)),
+    setUserDisplay: userDisplay => dispatch(actions.setUserDisplay(userDisplay))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);

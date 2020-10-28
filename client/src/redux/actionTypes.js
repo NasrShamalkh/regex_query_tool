@@ -1,0 +1,9 @@
+export const SET_USER_NAME = 'SET_USER_NAME';
+export const SET_EMAIL = 'SET_EMAIL';
+export const SET_PASSWORD = 'SET_PASSWORD';
+export const SET_IS_LOGGEDIN = 'SET_IS_LOGGEDIN';
+export const SET_USER_DISPLAY = 'SET_USER_DISPLAY';
+export const SET_QUERIES = 'SET_QUERIES';
+export const SET_REGEX = 'SET_REGEX';
+export const SET_FLAGS = 'SET_FLAGS';
+export const SET_TEXT = 'SET_TEXT';

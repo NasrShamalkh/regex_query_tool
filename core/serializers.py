@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from .models import Query
+
 
 # Django's builtin User models
 from django.contrib.auth.models import User
@@ -38,4 +40,8 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = ('token', 'username', 'password', 'email')
 
 
+class QuerySerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Query
+        fields = '__all__'

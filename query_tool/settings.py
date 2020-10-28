@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'query_tool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'regex_query_tool',
+        'NAME': 'query_tool',
         'USER': 'root',
         'PASSWORD': 'nasr123465',
         'HOST': 'localhost',
@@ -126,7 +126,8 @@ REST_FRAMEWORK = {
 
 # localhost:3000(our forntend) to the cors whitelist
 CORS_ORIGIN_WHITELIST = [
-'http://localhost:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
 ]
 
 # Internationalization
