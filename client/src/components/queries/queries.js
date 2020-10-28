@@ -23,6 +23,20 @@ const SavedQueries = function(props) {
     }
   }, [props.isLoggedin, props.queries]);
 
+  const handle_delete = function(id) {
+    if (props.isLoggedin) {
+      axios({
+        method: 'delete',
+        url: `http://localhost:8000/core/query/${id}`,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        }
+      }).then(res => {
+        console.log(res.data, '-------- response from server -----', 'deleted');
+      });
+    }
+  };
+
   if (props.isLoggedin) {
     if (props.queries.length === 0) {
       return (
@@ -114,6 +128,17 @@ const SavedQueries = function(props) {
                     >
                       {query.description}
                     </span>
+                    <button
+                      style={{
+                        float: 'right'
+                      }}
+                      className='btn btn-danger'
+                      onClick={() => {
+                        handle_delete(query.id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </li>
                 );
               })}
