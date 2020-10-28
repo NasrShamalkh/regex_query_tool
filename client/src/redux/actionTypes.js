@@ -7,3 +7,4 @@ export const SET_QUERIES = 'SET_QUERIES';
 export const SET_REGEX = 'SET_REGEX';
 export const SET_FLAGS = 'SET_FLAGS';
 export const SET_TEXT = 'SET_TEXT';
+export const SET_REPLACE_TEXT = 'SET_REPLACE_TEXT';

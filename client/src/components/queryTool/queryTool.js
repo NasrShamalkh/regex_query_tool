@@ -3,26 +3,46 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 
-// import $ from 'jquery'; // <-to import jquery
-// import 'highlight-within-textarea';
-
-// $('#addSupModal').modal('show');
-
 const QueryTool = function(props) {
-  const handle_submit = function() {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8000/core/query_regex/',
-      data: {
+  const [dispalyText, setDisplayText] = useState('idle');
+
+  const handle_submit = function(replace_text = null) {
+    var data;
+    if (replace_text) {
+      data = {
+        regex: props.regex,
+        flags: props.flags,
+        text: props.text,
+        replace_text: replace_text
+      };
+    } else {
+      data = {
         regex: props.regex,
         flags: props.flags,
         text: props.text
-      }
+      };
+    }
+    axios({
+      method: 'post',
+      url: 'http://localhost:8000/core/query_regex/',
+      data: data
     }).then(res => {
-      window.$('.text_textArea').highlightWithinTextarea({
-        highlight: res.data,
-        className: 'highlight'
-      });
+      if (typeof res.data === 'string') {
+        props.setText(res.data);
+        window.$('.text_textArea').highlightWithinTextarea({
+          highlight: replace_text,
+          className: 'highlight'
+        });
+        setDisplayText('valid');
+      } else if (res.data.length > 0 && Array.isArray(res.data)) {
+        window.$('.text_textArea').highlightWithinTextarea({
+          highlight: res.data,
+          className: 'highlight'
+        });
+        setDisplayText('valid');
+      } else {
+        setDisplayText('invalid');
+      }
     });
   };
 
@@ -76,6 +96,42 @@ const QueryTool = function(props) {
           props.setRegex(e.target.value);
         }}
       />
+      <label htmlFor='replace_text'>
+        Replace(
+        <span
+          style={{
+            opacity: '0.6'
+          }}
+        >
+          optional
+        </span>
+        ):
+      </label>
+      <br />
+      <input
+        style={{ width: '60%', display: 'inline' }}
+        className='form-control'
+        type='text'
+        id='replace_text'
+        value={props.replace_text}
+        onChange={e => {
+          props.setReplaceText(e.target.value);
+        }}
+      />
+      <button
+        style={{
+          display: 'inline',
+          marginLeft: '6px',
+          position: 'relative',
+          bottom: '3px'
+        }}
+        className='btn btn-warning'
+        onClick={() => {
+          handle_submit(props.replace_text);
+        }}
+      >
+        Replace Regex
+      </button>
       <div id='checkBoxes_div' className='form-check'>
         <p
           style={{
@@ -97,7 +153,7 @@ const QueryTool = function(props) {
           value='IGNORECASE'
         />
         <label className='form-check-label' htmlFor='i'>
-          Case insensitive - i
+          IGNORECASE - I
         </label>
         <br />
         <input
@@ -106,14 +162,30 @@ const QueryTool = function(props) {
             handle_flags(flag);
           }}
           type='checkbox'
-          id='m'
-          name='multi-line'
-          value='MULTILINE'
+          id='u'
+          name='unicode'
+          value='UNICODE'
         />
-        <label className='form-check-label' htmlFor='m'>
-          Multi-line - m
+        <label className='form-check-label' htmlFor='u'>
+          UNICODE - U
         </label>
         <br />
+        {/*  */}
+        <input
+          className='form-check-input'
+          onChange={flag => {
+            handle_flags(flag);
+          }}
+          type='checkbox'
+          id='x'
+          name='verbose'
+          value='VERBOSE'
+        />
+        <label className='form-check-label' htmlFor='x'>
+          VERBOSE - X
+        </label>
+        <br />
+        {/*  */}
         <input
           className='form-check-input'
           onChange={flag => {
@@ -121,22 +193,43 @@ const QueryTool = function(props) {
           }}
           type='checkbox'
           id='s'
-          name='dot'
+          name='dotall'
           value='DOTALL'
         />
         <label className='form-check-label' htmlFor='s'>
-          Dot. matches all - s
+          DOTALL - S
         </label>
         <br />
       </div>
       <div id='textArea_div'>
-        <label htmlFor='text'>Please Enter your Query Text</label>
+        <label
+          style={{
+            width: '760px'
+          }}
+          htmlFor='text'
+        >
+          <span id='_left'>Please Enter your Query Text</span>
+          <span id='_right'>
+            {dispalyText === 'valid' ? (
+              <p
+                style={{
+                  color: 'green'
+                }}
+              >
+                &lt; Query text is valid &gt;
+              </p>
+            ) : dispalyText === 'idle' ? (
+              <p>&lt; Your query result will be displayed here &gt;</p>
+            ) : (
+              <p style={{ color: 'red' }}>
+                &lt; No match! query text is invalid &gt;
+              </p>
+            )}
+          </span>
+        </label>
         <br />
         <textarea
-          // style={{ width: '80%' }}
-          // rows='10'
           className='text_textArea'
-          // className='form-control'
           value={props.text}
           onChange={e => {
             props.setText(e.target.value);
@@ -148,7 +241,9 @@ const QueryTool = function(props) {
         className='btn btn-success'
         type='submit'
         id='submitButton'
-        onClick={handle_submit}
+        onClick={() => {
+          handle_submit(null);
+        }}
       >
         Query Regex !
       </button>
@@ -171,7 +266,8 @@ const mapStateToProps = state => {
     email: state.email,
     regex: state.regex,
     flags: state.flags,
-    text: state.text
+    text: state.text,
+    replace_text: state.replace_text
   };
 };
 
@@ -179,7 +275,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setRegex: regex => dispatch(actions.setRegex(regex)),
     setFlags: flags => dispatch(actions.setFlags(flags)),
-    setText: text => dispatch(actions.setText(text))
+    setText: text => dispatch(actions.setText(text)),
+    setReplaceText: text => dispatch(actions.setReplaceText(text))
   };
 };
 

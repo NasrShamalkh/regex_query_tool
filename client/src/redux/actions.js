@@ -79,3 +79,12 @@ export const setText = function(text) {
     }
   };
 };
+
+export const setReplaceText = function(text) {
+  return {
+    type: actionTypes.SET_REPLACE_TEXT,
+    payload: {
+      data: text
+    }
+  };
+};

@@ -9,7 +9,8 @@ const initState = {
   userDisplay: localStorage.getItem('token') ? 'USER_PROFILE' : 'USER_LOGIN',
   regex: '',
   flags: [],
-  text: ''
+  text: '',
+  replace_text: ''
 };
 
 const reducer = function(state = initState, action) {
@@ -58,6 +59,11 @@ const reducer = function(state = initState, action) {
       return {
         ...state,
         text: action.payload.data
+      };
+    case actionTypes.SET_REPLACE_TEXT:
+      return {
+        ...state,
+        replace_text: action.payload.data
       };
     default:
       return state;
