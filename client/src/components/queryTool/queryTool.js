@@ -24,16 +24,22 @@ const QueryTool = function(props) {
     }
     axios({
       method: 'post',
-      url: 'http://localhost:8000/core/query_regex/',
+      url: 'core/query_regex/',
       data: data
     }).then(res => {
+      console.log(res);
       if (typeof res.data === 'string') {
-        props.setText(res.data);
-        window.$('.text_textArea').highlightWithinTextarea({
-          highlight: replace_text,
-          className: 'highlight'
-        });
-        setDisplayText('valid');
+        if (res.data != props.text) {
+          props.setText(res.data);
+          window.$('.text_textArea').highlightWithinTextarea({
+            highlight: replace_text,
+            className: 'highlight'
+          });
+          setDisplayText('valid');
+        } else {
+          console.log('invalid');
+          setDisplayText('');
+        }
       } else if (res.data.length > 0 && Array.isArray(res.data)) {
         window.$('.text_textArea').highlightWithinTextarea({
           highlight: res.data,
@@ -60,13 +66,15 @@ const QueryTool = function(props) {
   };
 
   const handle_save = function() {
-    if (props.isLoggedin) {
+    if (props.regex == '') {
+      alert('Please Enter a Regex expresseion to save');
+    } else if (props.isLoggedin) {
       var name = prompt('Enter name');
       var description = prompt('Enter Description');
 
       axios({
         method: 'post',
-        url: 'http://localhost:8000/core/query/',
+        url: 'core/query/',
         data: {
           query: props.regex,
           name,
@@ -76,7 +84,7 @@ const QueryTool = function(props) {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       }).then(res => {
-        console.log(res.data, '-------- response from server -----');
+        alert('Query saved !');
       });
     } else {
       alert('you have to log in or create an account first');
@@ -86,7 +94,8 @@ const QueryTool = function(props) {
   return (
     <div className='form-group'>
       <label htmlFor='regex'>Enter Regex Here:</label>
-      <input
+      <input 
+        placeholder='Regex'
         style={{ width: '80%' }}
         className='form-control'
         type='text'
@@ -108,7 +117,8 @@ const QueryTool = function(props) {
         ):
       </label>
       <br />
-      <input
+      <input 
+        placeholder='This will replace all matches'
         style={{ width: '60%', display: 'inline' }}
         className='form-control'
         type='text'

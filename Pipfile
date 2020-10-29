@@ -10,6 +10,8 @@ django = "*"
 djangorestframework = "*"
 djangorestframework-jwt = "*"
 django-cors-headers = "*"
+whitenoise = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.9"

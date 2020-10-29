@@ -7,7 +7,6 @@
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;
 }
 
 /* Handle */
@@ -24,11 +23,9 @@
 .App {
   display: flex;
   flex-direction: row;
-  height: 620px;
 }
 
 #root {
-  height: 100%;
   background-color: #f5f5dc;
   color: #171717;
 }
@@ -38,25 +35,24 @@ body {
 }
 #queryToolDiv {
   width: 75%;
-  padding-top: 30px;
+  padding-top: 25px;
   padding-left: 18px;
+  border-right: 1px solid lightblue;
 }
 
 #sideBarDiv {
   width: 30%;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid black; */
   padding-left: 5px;
 }
 
 #userDisplayDiv {
   height: 350px;
-  border: 1px solid grey;
-  border-radius: 8px;
   position: relative;
   left: 0;
   top: 0;
+  border-bottom: 1px solid lightblue;
 }
 
 #userProfileDiv {
@@ -69,11 +65,10 @@ body {
 }
 
 #savedQueriesDiv {
-  /* border: 1px solid black; */
   height: 50%;
   overflow: auto;
-  border: 1px solid grey;
   border-radius: 8px;
+  height: 275px;
 }
 
 #avatar {
@@ -84,33 +79,33 @@ body {
 }
 #userLoginDiv > button {
   position: absolute;
-  bottom: 17px;
+  bottom: 10px;
   left: 50%;
 }
 #userSignupDiv > button {
   position: absolute;
-  bottom: 17px;
+  bottom: 10px;
   left: 50%;
 }
 form > button {
   position: absolute;
-  bottom: 17px;
+  bottom: 10px;
   left: 25%;
 }
 
 .formHeaders {
   margin-top: 10px;
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Forte, Arial, Helvetica, sans-serif;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 ul {
   list-style: none;
 }
 #textArea_div {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -122,8 +117,9 @@ li:hover {
 }
 .text_textArea {
   width: 760px;
-  height: 230px;
+  height: 160px;
   border-radius: 15px;
+  resize: none;
 }
 #_right {
   float: right;

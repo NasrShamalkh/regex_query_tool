@@ -8,7 +8,7 @@ const LoginForm = function(props) {
     e.preventDefault();
     axios({
       method: 'post',
-      url: 'http://localhost:8000/token-auth/',
+      url: 'token-auth/',
       data: {
         username: props.username,
         password: props.password
@@ -16,12 +16,16 @@ const LoginForm = function(props) {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(res => {
-      localStorage.setItem('token', res.data.token);
-      props.setUsername(res.data.username);
-      props.setIsLoggedin(true);
-      props.setUserDisplay('USER_PROFILE');
-    });
+    })
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        props.setUsername(res.data.username);
+        props.setIsLoggedin(true);
+        props.setUserDisplay('USER_PROFILE');
+      })
+      .catch(err => {
+        alert('Oops something went wrong, please check your credentials');
+      });
   };
 
   return (

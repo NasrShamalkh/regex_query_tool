@@ -8,7 +8,7 @@ const SavedQueries = function(props) {
     if (props.isLoggedin) {
       axios({
         method: 'get',
-        url: 'http://localhost:8000/core/query/',
+        url: 'core/query/',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `JWT ${localStorage.getItem('token')}`
@@ -27,12 +27,12 @@ const SavedQueries = function(props) {
     if (props.isLoggedin) {
       axios({
         method: 'delete',
-        url: `http://localhost:8000/core/query/${id}`,
+        url: `core/query/${id}`,
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       }).then(res => {
-        console.log(res.data, '-------- response from server -----', 'deleted');
+        alert('Query Deleted !');
       });
     }
   };

@@ -11,7 +11,7 @@ const UserDisplay = function(props) {
     if (props.isLoggedin) {
       axios({
         method: 'get',
-        url: 'http://localhost:8000/core/current_user/',
+        url: 'core/current_user/',
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }

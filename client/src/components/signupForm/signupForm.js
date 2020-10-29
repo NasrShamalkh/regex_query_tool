@@ -2,13 +2,15 @@ import React from 'react';
 import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
 const SignupForm = function(props) {
   const handle_signup = e => {
     e.preventDefault();
     axios({
       method: 'post',
-      url: 'http://localhost:8000/core/users/',
+      url: 'core/users/',
       data: {
         username: props.username,
         password: props.password,
@@ -17,13 +19,17 @@ const SignupForm = function(props) {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(res => {
-      localStorage.setItem('token', res.data.token);
-      props.setUsername(res.data.username);
-      props.setEmail(res.data.email);
-      props.setIsLoggedin(true);
-      props.setUserDisplay('USER_PROFILE');
-    });
+    })
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        props.setUsername(res.data.username);
+        props.setEmail(res.data.email);
+        props.setIsLoggedin(true);
+        props.setUserDisplay('USER_PROFILE');
+      })
+      .catch(err => {
+        alert('User Already Exist !, please Log in');
+      });
   };
 
   return (
