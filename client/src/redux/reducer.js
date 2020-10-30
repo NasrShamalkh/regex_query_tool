@@ -10,7 +10,8 @@ const initState = {
   regex: '',
   flags: [],
   text: '',
-  replace_text: ''
+  replace_text: '',
+  count: 0
 };
 
 const reducer = function(state = initState, action) {
@@ -64,6 +65,11 @@ const reducer = function(state = initState, action) {
       return {
         ...state,
         replace_text: action.payload.data
+      };
+    case actionTypes.INCREASE_COUNT:
+      return {
+        ...state,
+        count: state.count + 0.5
       };
     default:
       return state;

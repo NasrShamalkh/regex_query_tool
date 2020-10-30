@@ -88,3 +88,9 @@ export const setReplaceText = function(text) {
     }
   };
 };
+
+export const increaseCount = function() {
+  return {
+    type: actionTypes.INCREASE_COUNT
+  };
+};

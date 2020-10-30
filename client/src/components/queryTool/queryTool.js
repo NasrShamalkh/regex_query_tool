@@ -84,6 +84,7 @@ const QueryTool = function(props) {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       }).then(res => {
+        props.increaseCount()
         alert('Query saved !');
       });
     } else {
@@ -286,7 +287,8 @@ const mapDispatchToProps = dispatch => {
     setRegex: regex => dispatch(actions.setRegex(regex)),
     setFlags: flags => dispatch(actions.setFlags(flags)),
     setText: text => dispatch(actions.setText(text)),
-    setReplaceText: text => dispatch(actions.setReplaceText(text))
+    setReplaceText: text => dispatch(actions.setReplaceText(text)),
+    increaseCount: () => dispatch(actions.increaseCount())
   };
 };
 

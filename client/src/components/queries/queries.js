@@ -21,7 +21,7 @@ const SavedQueries = function(props) {
           console.log('Error in fetching quries');
         });
     }
-  }, [props.isLoggedin, props.queries]);
+  }, [props.count, props.isLoggedin]);
 
   const handle_delete = function(id) {
     if (props.isLoggedin) {
@@ -32,6 +32,7 @@ const SavedQueries = function(props) {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       }).then(res => {
+        props.increaseCount();
         alert('Query Deleted !');
       });
     }
@@ -178,14 +179,16 @@ const SavedQueries = function(props) {
 const mapStateToProps = state => {
   return {
     isLoggedin: state.isLoggedin,
-    queries: state.queries
+    queries: state.queries,
+    count: state.count
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     setQueries: queries => dispatch(actions.setQueries(queries)),
-    setRegex: regex => dispatch(actions.setRegex(regex))
+    setRegex: regex => dispatch(actions.setRegex(regex)),
+    increaseCount: () => dispatch(actions.increaseCount())
   };
 };
 
