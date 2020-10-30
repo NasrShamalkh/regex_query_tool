@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 # we import obtain_jwt_token from the rest_framework_jwt views which is the way we decode the token with the request
 from rest_framework_jwt.views import obtain_jwt_token
+from .views import index
 
 urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     # when a request is made to token-auth/ we direct it to the token decoder
     path('token-auth/', obtain_jwt_token),
