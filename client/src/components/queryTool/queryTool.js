@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
+import './highlight-within-textarea';
+import jQuery from 'jquery';
 
 const QueryTool = function(props) {
   const [dispalyText, setDisplayText] = useState('idle');
@@ -31,7 +33,7 @@ const QueryTool = function(props) {
       if (typeof res.data === 'string') {
         if (res.data != props.text) {
           props.setText(res.data);
-          window.$('.text_textArea').highlightWithinTextarea({
+          jQuery('.text_textArea').highlightWithinTextarea({
             highlight: replace_text,
             className: 'highlight'
           });
@@ -41,7 +43,7 @@ const QueryTool = function(props) {
           setDisplayText('');
         }
       } else if (res.data.length > 0 && Array.isArray(res.data)) {
-        window.$('.text_textArea').highlightWithinTextarea({
+        jQuery('.text_textArea').highlightWithinTextarea({
           highlight: res.data,
           className: 'highlight'
         });
@@ -84,7 +86,7 @@ const QueryTool = function(props) {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       }).then(res => {
-        props.increaseCount()
+        props.increaseCount();
         alert('Query saved !');
       });
     } else {
@@ -95,7 +97,7 @@ const QueryTool = function(props) {
   return (
     <div className='form-group'>
       <label htmlFor='regex'>Enter Regex Here:</label>
-      <input 
+      <input
         placeholder='Regex'
         style={{ width: '80%' }}
         className='form-control'
@@ -118,7 +120,7 @@ const QueryTool = function(props) {
         ):
       </label>
       <br />
-      <input 
+      <input
         placeholder='This will replace all matches'
         style={{ width: '60%', display: 'inline' }}
         className='form-control'
