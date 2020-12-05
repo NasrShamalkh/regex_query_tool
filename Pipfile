@@ -6,13 +6,28 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django = "*"
-djangorestframework = "*"
-djangorestframework-jwt = "*"
-django-cors-headers = "*"
-whitenoise = "*"
-gunicorn = "*"
-django-heroku = "*"
+djangorestframework = "==3.12.1"
+djangorestframework-jwt = "==1.11.0"
+django-cors-headers = "==3.5.0"
+whitenoise = "==5.2.0"
+gunicorn = "==20.0.4"
+django-heroku = "==0.3.1"
+asgiref = "==3.2.10"
+certifi = "==2020.6.20"
+chardet = "==3.0.4"
+dj-database-url = "==0.5.0"
+heroku = "==0.1.4"
+idna = "==2.10"
+mysqlclient = {path = "./mysqlclient-1.4.6-cp39-cp39-win_amd64.whl"}
+psycopg2 = {path = "./psycopg2-2.8.6-cp39-cp39-win_amd64.whl"}
+psycopg2-binary = "==2.8.6"
+python-dateutil = "==1.5"
+pytz = "==2020.1"
+requests = "==2.24.0"
+sqlparse = "==0.4.1"
+urllib3 = "==1.25.11"
+Django = "==3.1.2"
+PyJWT = "==1.7.1"
 
 [requires]
 python_version = "3.9"
